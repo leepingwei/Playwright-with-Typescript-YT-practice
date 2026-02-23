@@ -1,7 +1,7 @@
 /* 
 https://naveenautomationlabs.com/opencart/index.php?route=account/login
 
-pwtest@opencart.com
+pwtest@opencart.co
 playwright@123
 
 Open Browser (chrome/chromium/firefox/webkit)
@@ -22,12 +22,14 @@ import { webkit, chromium, firefox } from "@playwright/test";
 
 test("login test", async () => {
   const browser: Browser = await chromium.launch({
-    headless: false,
-    channel: "chrome",
+    // headless: false,
+    // channel: "chrome",
+    headless: !!process.env.CI, // CI=true => headless
+    channel: process.env.CI ? undefined : "chrome", // Not force to use chrome channel in CI
   });
   const page: Page = await browser.newPage();
   await page.goto(
-    "https://naveenautomationlabs.com/opencart/index.php?route=account/login"
+    "https://naveenautomationlabs.com/opencart/index.php?route=account/login",
   );
 
   const emailId: Locator = await page.locator("#input-email");
